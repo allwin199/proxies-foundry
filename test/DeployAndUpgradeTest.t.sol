@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import {Test} from "forge-std/Test.sol";
+import {Test, console} from "forge-std/Test.sol";
 import {DeployBox} from "../script/DeployBox.s.sol";
 import {UpgradeBox} from "../script/UpgradeBox.s.sol";
 import {BoxV1} from "../src/BoxV1.sol";
@@ -11,6 +11,8 @@ contract DeployAndUpgradeTest is Test {
     DeployBox public deployer;
     UpgradeBox public upgrader;
     BoxV2 public boxV2;
+
+    address deployerKey;
 
     address public owner = makeAddr("owner");
 
@@ -23,6 +25,12 @@ contract DeployAndUpgradeTest is Test {
 
         proxy = deployer.run();
         // proxy right now points to boxV1
+
+        if (block.chainid == 31337) {
+            deployerKey = vm.envAddress("ANVIL_KEYCHAIN");
+        } else {
+            deployerKey = vm.envAddress("SEPOLIA_KEYCHAIN");
+        }
     }
 
     function test_proxyStartsWith_BoxV1() public {
