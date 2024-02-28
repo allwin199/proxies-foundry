@@ -12,8 +12,6 @@ contract DeployAndUpgradeTest is Test {
     UpgradeBox public upgrader;
     BoxV2 public boxV2;
 
-    address deployerKey;
-
     address public owner = makeAddr("owner");
 
     address public proxy;
@@ -25,12 +23,6 @@ contract DeployAndUpgradeTest is Test {
 
         proxy = deployer.run();
         // proxy right now points to boxV1
-
-        if (block.chainid == 31337) {
-            deployerKey = vm.envAddress("ANVIL_KEYCHAIN");
-        } else {
-            deployerKey = vm.envAddress("SEPOLIA_KEYCHAIN");
-        }
     }
 
     function test_proxyStartsWith_BoxV1() public {

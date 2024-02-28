@@ -23,14 +23,17 @@ contract DeployBox is Script {
 
     function deployBox() public returns (address) {
         vm.startBroadcast(deployer);
+
         // BoxV1 will be the implementation contract
         BoxV1 box = new BoxV1();
 
         // proxy will be the proxy contract
         ERC1967Proxy proxy = new ERC1967Proxy(address(box), "");
+
         BoxV1(address(proxy)).initialize(msg.sender);
 
         vm.stopBroadcast();
+
         return address(proxy);
     }
 }

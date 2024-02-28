@@ -25,6 +25,7 @@ contract UpgradeBox is Script {
         vm.startBroadcast(deployer);
         boxV2 = new BoxV2();
         vm.stopBroadcast();
+
         address proxy = upgradeBox(mostRecentlyDeployedProxy, address(boxV2));
         return proxy;
     }
@@ -33,11 +34,11 @@ contract UpgradeBox is Script {
         vm.startBroadcast(deployer);
 
         BoxV1 proxy = BoxV1(payable(proxyAddress));
-        // since upgradeToCall is present inside the implementation contract
+        // since upgradeToCall is present inside the current implementation contract
         // we have to typecast proxy to BoxV1
 
         proxy.upgradeToAndCall(address(newBox), "");
-        // proxy contract now points to this new address
+        // proxy contract now points to this new implementation
 
         // address owner = BoxV2(newBox).owner();
         // console.log("owner", owner);
