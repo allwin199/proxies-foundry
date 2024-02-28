@@ -24,5 +24,3 @@
 
 - Proxy Patterns
 - UUPS (Universal Upgradable Proxy Pattern)
-
-https://youtu.be/wUjYK5gwNZs?t=18139
