@@ -30,7 +30,7 @@ contract SmallProxy is Proxy {
         return abi.encodeWithSignature("setValue(uint256)", numberToUpdate);
     }
 
-    // by callind the above function
+    // by calling the above function
     // we are making changes to the smallProxy contract storage
 
     function readStorage() public view returns (uint256 valueAtStorageSlotZero) {
