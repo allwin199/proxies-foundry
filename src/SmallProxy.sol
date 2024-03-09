@@ -41,7 +41,7 @@ contract SmallProxy is Proxy {
 
     // when getDataToTransact is called with a number
     // it will return the functionSignature hash
-    // use the functionSignature hash and give this as a input to the CALLDATA and trigger transact
+    // use the functionSignature hash and give this as a input to the `CALLDATA` and trigger  `transact` in metamask
     // then call the readStorage to check the updated number
 }
 
@@ -60,8 +60,8 @@ contract SmallProxy is Proxy {
 // to store the implementation contract we are using special storage allocated for it => _IMPLEMENTATION_SLOT
 // _IMPLEMENTATION_SLOT will store the contract address that has to be implemented.
 
-// Whenever smallProxy is called, with a function that dosen't exist in smallProxy using fallback()
-// it will do delegateCall to that implementation contract
+// Whenever smallProxy is called, with a function that dosen't exist in smallProxy
+// using fallback() it will do delegateCall to the current implementation contract
 
 contract ImplementationA {
     uint256 public value;

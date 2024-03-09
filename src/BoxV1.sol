@@ -25,7 +25,7 @@ contract BoxV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
 
     // this `initialize` function will act as `constructor` for `proxy` contracts
     // when this contract is deployed
-    // proxy contract will immediately call this `initialize` function
+    // deployer has to call this `initialize` function
     // which will make `proxy` contract to be owner of this contract
     function initialize(address initialOwner) public initializer {
         __Ownable_init(initialOwner);
