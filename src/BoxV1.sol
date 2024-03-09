@@ -5,6 +5,14 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/contracts/
 import {Initializable} from "@openzeppelin/contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 
+// since we are using `UUPSUpgradeable`
+// we have to add all the proxy upgradeability in this contract
+// `UUPSUpgradeable` is doing all the proxy upgrade stuff
+
+// `Initializable`
+// Since proxied contracts do not make use of a constructor, it's common to move constructor logic to an
+// external initializer function, usually called `initialize`.
+
 /// @notice uses UUPS proxy
 /// @notice storage is stored in the proxy, NOT the implementation
 /// @notice proxy will borrow the implementation functions
@@ -28,7 +36,12 @@ contract BoxV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // deployer has to call this `initialize` function
     // which will make `proxy` contract to be owner of this contract
     function initialize(address initialOwner) public initializer {
+        // since proxy contracts dosen't have any constructor
+        // we cannot say owner = msg.sender
+        // instead we have to use
+        // `OwnableUpgradeable` library
         __Ownable_init(initialOwner);
+
         __UUPSUpgradeable_init();
         // this fn dosen't change anything but since it is `UUPSUpgradeable` we have placed it here
     }
@@ -41,7 +54,12 @@ contract BoxV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return 1;
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override {
+    // when we do the upgrade using
+    // `upgradeTo` or `UpgradeToAndCall`
+    // this function will be called and check to see
+    // whether `msg.sender` is autorized to upgrade the implementation
+    // If the `msg.sender` is not autorized, it will revert
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {
         // if(msg.sender != owner){
         //     revert;
         // }
@@ -51,4 +69,6 @@ contract BoxV1 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // since we haven't implemented any checks in _authorizeUpgrade
     // anyone can call this fn right now
     // but we have to restrict to only owner
+
+    // therfore we have added `onlyOwner` modifier from `OwnableUpgradeable`
 }
